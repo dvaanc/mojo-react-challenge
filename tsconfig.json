@@ -22,5 +22,5 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src",  ]
+    "src", "temporary_trash/Characters.ts",  ]
 }

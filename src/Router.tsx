@@ -5,7 +5,7 @@ import {
   Route,
   Link,
 } from "react-router-dom"
-import Character from './components/Character'
+import Character from './Components/Character'
 import App from './App';
 export default function Router() {
   return (
