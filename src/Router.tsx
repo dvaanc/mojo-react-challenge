@@ -5,7 +5,7 @@ import {
   Route,
   Link,
 } from "react-router-dom"
-import Character from './Components/Character'
+import GetCharacters from './Components/Characters'
 import App from './App';
 export default function Router() {
   return (
@@ -14,7 +14,7 @@ export default function Router() {
     <Route path="/" element={ <App /> }/>
 
     {/* <Route path="/characters/:id" element={ <Character /> }/> */}
-    <Route path="/character" element={ <Character /> }/>
+    {/* <Route path="/character" element={ <GetCharacters /> }/> */}
 
   </Routes>
 </HashRouter>

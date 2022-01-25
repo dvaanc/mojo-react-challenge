@@ -3,8 +3,8 @@ import { gql } from '@apollo/client';
 
 
 export const GET_CHARACTERS = gql`
-query{
-  characters {
+query GET_CHARACTERS($pageNumber: Int!) {
+  characters(page: $pageNumber) {
     results {
       name
       image
