@@ -1,10 +1,13 @@
 {
   "files": {
-    "main.js": "/mojo-react-challenge/static/js/main.1af86995.js",
+    "main.css": "/mojo-react-challenge/static/css/main.d33dd536.css",
+    "main.js": "/mojo-react-challenge/static/js/main.ad76bf70.js",
     "index.html": "/mojo-react-challenge/index.html",
-    "main.1af86995.js.map": "/mojo-react-challenge/static/js/main.1af86995.js.map"
+    "main.d33dd536.css.map": "/mojo-react-challenge/static/css/main.d33dd536.css.map",
+    "main.ad76bf70.js.map": "/mojo-react-challenge/static/js/main.ad76bf70.js.map"
   },
   "entrypoints": [
-    "static/js/main.1af86995.js"
+    "static/css/main.d33dd536.css",
+    "static/js/main.ad76bf70.js"
   ]
 }
