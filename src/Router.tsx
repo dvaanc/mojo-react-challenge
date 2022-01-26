@@ -5,40 +5,59 @@ import {
   Route,
   Link,
 } from "react-router-dom"
-import GetCharacters from './Components/Characters'
+import { 
+  ApolloClient, 
+  ApolloProvider,
+  InMemoryCache,
+  HttpLink,
+  from
+} from '@apollo/client';
+import { onError } from "@apollo/client/link/error"
 import App from './App';
 import { ThemeProvider } from "@emotion/react";
 import { createTheme, ThemeOptions, PaletteMode } from '@mui/material'
+import CharacterPage from './Components/CharacterPage';
 
   const theme: ThemeOptions = createTheme({
     palette: {
       mode: 'dark' as PaletteMode,
-      // primary: {
-      //   main: '#19286d',
-      //   light: '#7BACD4'
-      // },
-      // secondary: {
-      //   main: '#12cec0',
-      // },
-      // background: {
-      //   paper: '#1E1E1E',
-      // },
-      // text: {
-      //   primary: "#fff",
-      // }
     },
   });
+//reference from https://www.apollographql.com/docs/react/api/link/apollo-link-error/
+  const errorLink = onError(({ graphQLErrors, networkError}) => {
+    if (graphQLErrors)
+      graphQLErrors.forEach(({ message, locations, path }) =>
+        console.log(
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+        )
+      );
+    if (networkError) console.log(`[Network error]: ${networkError}`);
+  })
+  
+  const link = from([
+    errorLink,
+    new HttpLink({ uri: "https://rickandmortyapi.com/graphql/" }),
+  ])
+  
+  const client = new ApolloClient({
+    uri: 'https://rickandmortyapi.com/graphql/',
+    cache: new InMemoryCache(),
+    link: link,
+  })
+
 export default function Router() {
 
   return (
     <HashRouter basename="/">
-      <ThemeProvider theme={theme}>
-        <Routes>
-          <Route path="/" element={ <App /> }/>
-          {/* <Route path="/characters/:id" element={ <Character /> }/> */}
-          {/* <Route path="/character" element={ <GetCharacters /> }/> */}
-        </Routes>
-      </ThemeProvider>
+      <ApolloProvider client={client}>
+        <ThemeProvider theme={theme}>
+          <Routes>
+            <Route path="/" element={ <App /> }/>
+            <Route path="/characters/:id" element={ <CharacterPage /> }/>
+            {/* <Route path="/character" element={ <GetCharacters /> }/> */}
+          </Routes>
+        </ThemeProvider>
+      </ApolloProvider>
     </HashRouter>
 
   )

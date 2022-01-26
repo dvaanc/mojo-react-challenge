@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from 'react'
-import { useQuery, gql } from  '@apollo/client'
-import { GET_CHARACTERS } from '../GraphQL/Queries'
+import { GET_CHARACTERS, GetCharacters } from '../GraphQL/Queries'
 import { Grid } from '@mui/material'
 import { v4 as uuidv4 } from 'uuid'
 
 import CharacterCard from './CharacterCard'
+  // pageNumberProp: number 
+  // characterQueryProp: string
+  // isSearchbarEmptyProp: boolean
+interface CharactersProps { 
+
+  charactersArrayProp: null | Array<any>
+}
 
 
-interface CharactersProps { pageNumberProp: number }
-
-
-export default function Characters({ pageNumberProp }: CharactersProps) {
-
+export default function Characters({ charactersArrayProp }: CharactersProps) {
   const [characters, setCharacters] = useState(null as null | Array<any>)
-  const { error, loading, data } = useQuery(GET_CHARACTERS, {
-    variables: { pageNumber: pageNumberProp }
-  })
-  console.log(loading)
-  if(error) console.log(error)
-
-
-  
   useEffect(() => {
-    if(data) setCharacters(data.characters.results)
-  }, [data])
+    setCharacters(charactersArrayProp)
+  }, [charactersArrayProp])
+  // const [characters, setCharacters] = useState(null as null | Array<any>)
+  // const data = GetCharacters(pageNumberProp, characterQueryProp)
+  // useEffect(() => {
+  //   console.log(data.characters.info.pages)
+  //   if(data) setCharacters(data.characters.results)
+  // }, [data])
 
   // this useEffect hook below is another way of just fetching all the characters with the character endpoint. 
   // this exists for the purpose of playing around with the rick and morty api
@@ -56,7 +56,7 @@ export default function Characters({ pageNumberProp }: CharactersProps) {
           characters.map((character: any) => {
             return(
               <Grid item xs={6} sm={4} md={3} lg={2} key={uuidv4()}>
-                <CharacterCard characterNameProp={character.name} characterImageProp={character.image}/>
+                <CharacterCard characterNameProp={character.name} characterImageProp={character.image} characterID={character.id}/>
               </Grid>
             )
           }) 

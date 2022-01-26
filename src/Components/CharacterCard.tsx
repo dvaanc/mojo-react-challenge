@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 import { 
   Card, 
   CardActions, 
@@ -7,9 +7,9 @@ import {
   Typography, 
   CardActionArea, 
   CardMedia,
-
 } from '@mui/material'
-import { styled } from '@mui/system';
+import { styled } from '@mui/system'
+import { Link } from 'react-router-dom'
 
 
 // declare module '@mui/material/styles' {
@@ -58,8 +58,10 @@ import { styled } from '@mui/system';
 interface CharacterCardProps {
   characterNameProp: string,
   characterImageProp: string,
+  characterID: number,
 }
-export default function CharacterCard({ characterNameProp, characterImageProp }: CharacterCardProps) {
+export default function CharacterCard({ 
+  characterNameProp, characterImageProp, characterID }: CharacterCardProps) {
   return (
     <CustomCard sx={{ bgcolor: 'background.paper' }}>
       <CardActionArea>
@@ -75,9 +77,16 @@ export default function CharacterCard({ characterNameProp, characterImageProp }:
         </CardContent>
       </CardActionArea>
         <CardActions>
-          <Button variant="outlined" size="small" color="secondary">
-            details
-          </Button>
+          <Link to={`/characters/${characterID}`}>
+            <Button 
+            variant="outlined" 
+            size="small" 
+            color="secondary" 
+            >
+              details
+            </Button>
+          </Link>
+
         </CardActions>
     </CustomCard>
   );
