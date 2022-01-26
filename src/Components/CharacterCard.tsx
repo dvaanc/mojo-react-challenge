@@ -7,12 +7,11 @@ import {
   Typography, 
   CardActionArea, 
   CardMedia,
-  createTheme,
-  ThemeOptions
+
 } from '@mui/material'
 import { styled } from '@mui/system';
-import { ThemeProvider } from "@emotion/react";
-const CustomCard = styled(Card)
+
+
 // declare module '@mui/material/styles' {
 //   interface Theme {
 //     status: {
@@ -40,58 +39,46 @@ const CustomCard = styled(Card)
 //     };
 //   }
 
-  const theme: ThemeOptions = createTheme({
-    palette: {
-      primary: {
-        main: '#19286d',
-        light: '#7BACD4'
-      },
-      secondary: {
-        main: '#12cec0',
-      },
-      background: {
-        paper: '#1E1E1E',
-      },
-      text: {
-        primary: "#fff",
-      }
-    },
-  });
 
+  const CustomCard = styled(Card)`
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 206px;
+    max-width: 246px;
+
+  `
+  // const MyThemeComponent = styled('div')(({ theme }) => ({
+  //   color: theme.palette.primary.contrastText,
+  //   backgroundColor: theme.palette.primary.main,
+  //   padding: theme.spacing(1),
+  //   borderRadius: theme.shape.borderRadius,
+  // }));
 interface CharacterCardProps {
   characterNameProp: string,
   characterImageProp: string,
 }
 export default function CharacterCard({ characterNameProp, characterImageProp }: CharacterCardProps) {
-
   return (
-    <ThemeProvider theme={theme}>
-      <Card sx={{ maxWidth: 406, bgcolor: 'background.paper', display: 'flex',  justifyContent: 'center'}}>
-        <CardActionArea>
-          <CardContent sx={{height: '100%'}}>
-            <CardMedia
-              component="img"
-              height="120"
-              image={characterImageProp}
-              alt={characterNameProp}
-            />
-            <Typography
-              component='div'
-              sx={{ fontSize: 14 }}
-              textAlign="center"
-              color='text.primary'
-            >
-              {characterNameProp}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-        {/* sx={{ color: 'primary.light', borderColor: 'primary.light' }} */}
-          <CardActions>
-            <Button variant="outlined" size="small" color="secondary">
-              ...details
-            </Button>
-          </CardActions>
-      </Card>
-    </ThemeProvider>
+    <CustomCard sx={{ bgcolor: 'background.paper' }}>
+      <CardActionArea>
+        <CardContent 
+        sx={{ 
+        minHeight: 150, padding: 0,
+        display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+        }}>
+          <CardMedia component="img" height="120" image={characterImageProp} alt={characterNameProp}/>
+          <Typography component='div' sx={{ fontSize: 14 }} textAlign="center" color='text.primary'>
+            {characterNameProp}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+        <CardActions>
+          <Button variant="outlined" size="small" color="secondary">
+            details
+          </Button>
+        </CardActions>
+    </CustomCard>
   );
 }

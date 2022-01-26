@@ -3,7 +3,7 @@ import { useQuery, gql } from  '@apollo/client'
 import { GET_CHARACTERS } from '../GraphQL/Queries'
 import { Grid } from '@mui/material'
 import { v4 as uuidv4 } from 'uuid'
-import { experimentalStyled as styled } from '@mui/material/styles';
+
 import CharacterCard from './CharacterCard'
 
 
@@ -11,6 +11,7 @@ interface CharactersProps { pageNumberProp: number }
 
 
 export default function Characters({ pageNumberProp }: CharactersProps) {
+
   const [characters, setCharacters] = useState(null as null | Array<any>)
   const { error, loading, data } = useQuery(GET_CHARACTERS, {
     variables: { pageNumber: pageNumberProp }
@@ -19,6 +20,7 @@ export default function Characters({ pageNumberProp }: CharactersProps) {
   if(error) console.log(error)
 
 
+  
   useEffect(() => {
     if(data) setCharacters(data.characters.results)
   }, [data])
@@ -36,9 +38,9 @@ export default function Characters({ pageNumberProp }: CharactersProps) {
   //   fetchAllCharacters()
   // }, [])
 
-  useEffect(() => {
-    console.log(characters)
-  }, [characters])
+  // useEffect(() => {
+  //   console.log(characters)
+  // }, [characters])
 
   return (
     <div>
@@ -53,7 +55,7 @@ export default function Characters({ pageNumberProp }: CharactersProps) {
         characters !== null ? 
           characters.map((character: any) => {
             return(
-              <Grid item xs={8} sm={2} md={2} lg={2} key={uuidv4()}>
+              <Grid item xs={6} sm={4} md={3} lg={2} key={uuidv4()}>
                 <CharacterCard characterNameProp={character.name} characterImageProp={character.image}/>
               </Grid>
             )

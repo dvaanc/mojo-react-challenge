@@ -16,3 +16,5 @@
 - Used a theme creator https://bareynol.github.io/mui-theme-creator/#Card
 - messed around with MUI
 - need to create custom styled component for CharacterCards
+
+Live preview: https://dvaanc.github.io/mojo-react-challenge/
