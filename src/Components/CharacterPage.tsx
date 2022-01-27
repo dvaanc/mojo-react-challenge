@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { Button, Container, Box, TextField, Typography } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import { Button, Container, Box, TextField, Typography, List, ListItem, ListItemText } from '@mui/material'
 import { styled } from '@mui/system'
-import { GetCharacter } from '../GraphQL/Queries';
+import { GetCharacter } from '../GraphQL/Queries'
+import { v4 as uuidv4 } from 'uuid'
 
 const CustomBio = styled('div')`
   display: flex;
@@ -26,10 +27,6 @@ const ImageContainer = styled('div')`
     object-position: center;
   }
 `
-// rgb(158, 158, 158)
-// rgb(214, 61, 46) none repeat scroll 0% 0%
-// rgb(85, 204, 68) none repeat scroll 0% 0%;
-  // background: rgb(214, 61, 46) none repeat scroll 0% 0%;
 const AliveStatus = styled('div')<{ status: string }>`
   height: 8px;
   width: 8px;
@@ -45,40 +42,49 @@ export default function CharacterPage() {
   // had to create a seperate state of episodes due to data only giving end points for each episodes, 
   // will need to loop over the entire episoddes array from characterData to fetch the episode field from each endpoint
   const [episodes, setEpisodes] = useState(null as any)
+  const [isEpisodesLoading, setIsEpisodesLoading] = useState(true as boolean)
+  const isMounted = true
   const { id } = useParams();
+  
   
   // grab all of character data
   useEffect(() => {
-    const fetchCharacter = async() => {
-      const res = await fetch(`https://rickandmortyapi.com/api/character/${id}`)
-      const data = await res.json()
-      setCharacterData(data)
-    }
-    fetchCharacter()
+    if(isMounted) fetchCharacterData()
   }, [])
-  useEffect(() => {
-    const fetchEpisodes = async() => {
-      const rawEpisodeLinks: Array<any> = [...characterData.episode]
-      const episodeData: Array<any> = []
-      rawEpisodeLinks.forEach((item) => {
-        const res = fetch(item).then((res) => {
-          episodeData.push(res.json())
-        })
-      })
-      setEpisodes(episodeData)
-    }
-    if(characterData !== null) fetchEpisodes()
-  }, [characterData])
+  // useEffect(() => {
+  //   const fetchEpisodes = async() => {
+  //     const rawEpisodeLinks: Array<any> = [...characterData.episode]
+  //     const episodeData: Array<any> = []
+  //     rawEpisodeLinks.forEach(async(item) => {
+  //       const res = await fetch(item)
+  //       const data = await res.json()
+  //       episodeData.push(data)
+  //     })
+  //     setIsEpisodesLoading(false)
+  //     setEpisodes(episodeData)
+  //   }
+  //   if(!isEpisodesLoading) return
+  //   if(characterData && isMounted) fetchEpisodes()
+  // }, [characterData])
   // useEffect(() => {
   //   if(characterData) console.log(characterData)
   // }, [characterData])
   useEffect(() => {
-    if(episodes) {
-      episodes.forEach((item: any) => {
-        console.log(item)
-      })
-    }
+    console.log(episodes)
   }, [episodes])
+
+  const fetchCharacterData = async() => {
+    const res = await fetch(`https://rickandmortyapi.com/api/character/${id}`)
+    const data = await res.json()
+    const episodeProcessedData: Array<any> = []
+    data.episode.map(async(ep:any) => {
+      const res = await fetch(ep)
+      const data = await res.json()
+      episodeProcessedData.push(data)
+    })
+    setCharacterData(data)
+    setEpisodes(episodeProcessedData)
+  }
   return (
     <Box style={{ backgroundColor: '#24282F'}} sx={{ width: 1, padding: 5, minHeight: '100vh' }}>
       <Container maxWidth='md' sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -88,12 +94,7 @@ export default function CharacterPage() {
             <ImageContainer>
               <img draggable='false' src={characterData.image} alt={characterData.name}/>
             </ImageContainer>
-            <Box sx={{ 
-              display: 'flex', 
-              flexDirection: 'column',  alignItems: 'flex-start', 
-              width: 1,
-              ml: 3
-              }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column',  alignItems: 'flex-start', width: 1, ml: 3 }}>
               <Typography gutterBottom variant='h5' sx={{ width: 1, pt: 2, fontWeight: 'bold'}}>
                 { characterData.name }
               </Typography>
@@ -111,26 +112,36 @@ export default function CharacterPage() {
               </Box>
             </Box>
           </Box>
-          <Box>
-          <ul>
-          {/* { episodes !== null ?
-            episodes.forEach((item: any) => {
-              const data = item.json()
+          <Box sx={{ height: 200 }}>
+          <List>
+            <Typography>
+              Episodes appeared in:
+            </Typography>
+          { episodes !== null ?
+            episodes.map((item: any) => {
+              const episodeVal = item.episode
               return (
-                <li>{data}</li>
+                <ListItem key={uuidv4()}>
+                  <ListItemText primary={episodeVal}/>
+                  </ListItem>
               )
             })
             :
             'loading..'
-          } */}
-        </ul>
+          }
+        </List>
           </Box>
       </CustomBio>
       :
       <div>Loading...</div>
 
       }
+      <Link to='/'>
+        <Button variant='contained' sx={{ mt: 2 }}>Back</Button>
+      </Link>
+
       </Container>
+
     </Box>
   )
 }

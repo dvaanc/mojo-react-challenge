@@ -3,8 +3,8 @@ import { gql, useQuery } from '@apollo/client';
 
 // used to fetch all characters, fetch a page of characters, or filter characters by name with query variables.
 export const GET_CHARACTERS = gql`
-  query GET_CHARACTERS($pageNumber: Int, $characterName: String) {
-    characters(page: $pageNumber, filter: { name: $characterName }) {
+  query GET_CHARACTERS($pageNumber: Int, $characterName: String, $gender: String, $species: String, $status: String, $type: String) {
+    characters(page: $pageNumber, filter: { name: $characterName, gender: $gender, species: $species, status: $status, type: $type }) {
       info {
         pages
       }
@@ -69,11 +69,25 @@ export const FILTER_CHARACTERS_BY_NAME = gql`
   }
 `
 
-export const GetCharacters = (pageNumberProp: number, characterQueryProp: string) => {
+export const GetCharacters = (
+  pageNumberProp: number, 
+  characterQueryProp: string, 
+  genderProp: string, 
+  speciesProp: string,
+  statusProp: string,
+  typeProp: string,
+  ) => {
   const { error, data } = 
   useQuery(
     GET_CHARACTERS, 
-    { variables: { pageNumber: pageNumberProp, characterName: characterQueryProp } }
+    { variables: { 
+      pageNumber: pageNumberProp, 
+      characterName: characterQueryProp,
+      gender: genderProp,
+      species: speciesProp,
+      status: statusProp,
+      type: typeProp
+    } }
     )
     if(error) throw error
   return data

@@ -25,5 +25,13 @@
 - styled the page 
 - refactor code
 - add search query by character name
+- add dynamic router
+- add styling for character card
+- add useEffect hook to chain fetches
+
+- NOTE need to remove chain fetches, instead useContext to get character infomartion instead
+
+- add additional filter options
+- need to add search button so it doesnt fire off too many useQueries (typing to fast triggers an error)
 
 Live preview: https://dvaanc.github.io/mojo-react-challenge/

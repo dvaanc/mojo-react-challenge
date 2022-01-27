@@ -81,7 +81,7 @@ export default function CharacterCard({
             <Button 
             variant="outlined" 
             size="small" 
-            color="secondary" 
+            color="primary" 
             >
               details
             </Button>

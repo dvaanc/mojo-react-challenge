@@ -17,6 +17,7 @@ import App from './App';
 import { ThemeProvider } from "@emotion/react";
 import { createTheme, ThemeOptions, PaletteMode } from '@mui/material'
 import CharacterPage from './Components/CharacterPage';
+import ContentNextWeek from 'material-ui/svg-icons/content/next-week';
 
   const theme: ThemeOptions = createTheme({
     palette: {
