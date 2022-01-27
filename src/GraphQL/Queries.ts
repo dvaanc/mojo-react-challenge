@@ -89,7 +89,7 @@ export const GetCharacters = (
         status: statusProp,
         type: typeProp
       },
-      skip: skipQuery
+      // skip: skipQuery
     }
     )
     if(error) throw error

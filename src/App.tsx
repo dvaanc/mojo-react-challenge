@@ -138,7 +138,7 @@ export default function App() {
         </Box>
         <FormControl sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
           <Button onClick={ resetFields } variant='outlined' color='error'>Reset fields</Button>
-          <Button onClick={ search } variant='contained' color='success'>Search</Button>
+          {/* <Button onClick={ search } variant='contained' color='success'>Search</Button> */}
         </FormControl>
         <Pagination onClick={ handlePaginationClick } count={ numberOfPages } color="primary" shape="rounded"  sx={{ mb: 2, mt: 2 }} disabled={ disablePagination } data-disabled={ disablePagination } /> 
         </Box>

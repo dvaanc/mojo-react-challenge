@@ -4,16 +4,15 @@ import {
   Button, 
   Container, 
   Box, 
-  TextField, 
   Typography, 
   List, 
   ListItem, 
   ListItemText,
-  CircularProgress
+  ListSubheader
 } from '@mui/material'
 import { styled } from '@mui/system'
-import { GetCharacter } from '../GraphQL/Queries'
 import { v4 as uuidv4 } from 'uuid'
+import LoadingModal from './LoadingModal'
 
 const CustomBio = styled('div')`
   display: flex;
@@ -52,7 +51,6 @@ export default function CharacterPage() {
   // had to create a seperate state of episodes due to data only giving end points for each episodes, 
   // will need to loop over the entire episoddes array from characterData to fetch the episode field from each endpoint
   const [episodes, setEpisodes] = useState(null as any)
-  const [isEpisodesLoading, setIsEpisodesLoading] = useState(true as boolean)
   const isMounted = true
   const { id } = useParams();
   
@@ -61,44 +59,37 @@ export default function CharacterPage() {
   useEffect(() => {
     if(isMounted) fetchCharacterData()
   }, [])
-  // useEffect(() => {
-  //   const fetchEpisodes = async() => {
-  //     const rawEpisodeLinks: Array<any> = [...characterData.episode]
-  //     const episodeData: Array<any> = []
-  //     rawEpisodeLinks.forEach(async(item) => {
-  //       const res = await fetch(item)
-  //       const data = await res.json()
-  //       episodeData.push(data)
-  //     })
-  //     setIsEpisodesLoading(false)
-  //     setEpisodes(episodeData)
-  //   }
-  //   if(!isEpisodesLoading) return
-  //   if(characterData && isMounted) fetchEpisodes()
-  // }, [characterData])
-  // useEffect(() => {
-  //   if(characterData) console.log(characterData)
-  // }, [characterData])
+
   useEffect(() => {
-    console.log(episodes)
-  }, [episodes])
+    setTimeout(() => {
+      if(characterData) fetchEpisodes()
+    }, 1500)
+
+  }, [characterData])
+
+
+  // useEffect(() => {
+  //   console.log(episodes)
+  // }, [episodes ])
 
   const fetchCharacterData = async() => {
     const res = await fetch(`https://rickandmortyapi.com/api/character/${id}`)
     const data = await res.json()
-    const episodeProcessedData: Array<any> = []
-    data.episode.map(async(ep:any) => {
-      const res = await fetch(ep)
-      const data = await res.json()
-      episodeProcessedData.push(data)
-    })
     setCharacterData(data)
-    setEpisodes(episodeProcessedData)
+  }
+  const fetchEpisodes = async() => {
+    const promises: Array<any> = [...characterData.episode]
+    const episodeData: Array<any> = []
+    for(const item of promises) {
+      const res = await fetch(item)
+        res.json().then((res) => episodeData.push(res))
+    }
+    setEpisodes(episodeData)
   }
   return (
     <Box style={{ backgroundColor: '#24282F'}} sx={{ width: 1, padding: 5, minHeight: '100vh' }}>
       <Container maxWidth='md' sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      { characterData !== null ? 
+      { characterData !== null &&
         <CustomBio>
           <Box sx={{ display: 'flex', width: 1 }}>
             <ImageContainer>
@@ -122,28 +113,27 @@ export default function CharacterPage() {
               </Box>
             </Box>
           </Box>
-          <Box sx={{ height: 200 }}>
-          <List>
-            <Typography>
+          <Box sx={{ mt: 2, maxHeight: 326, overflow: 'auto', width: 1 }}>
+          <ListSubheader sx={{ backgroundColor: '#3C3E44' }}>
+            <Typography variant='h6' align='center'>
               Episodes appeared in:
             </Typography>
+            </ListSubheader>
+          <List sx={{ display: 'flex', flexDirection: 'column', }}>
           { episodes !== null ?
-            episodes.map((item: any) => {
-              const episodeVal = item.episode
-              return (
-                <ListItem key={uuidv4()}>
-                  <ListItemText primary={episodeVal}/>
-                  </ListItem>
-              )
-            })
-            :
-            'loading..'
+          episodes.map((item: any) => {
+            return (
+              <ListItem key={uuidv4()}>
+                <ListItemText primary={item.episode} secondary={item.name} />
+              </ListItem>
+            )
+          }) 
+          :
+          <LoadingModal show={true}/>
           }
         </List>
           </Box>
       </CustomBio>
-      :
-      <CircularProgress />
 
       }
       <Link to='/'>
