@@ -49,12 +49,15 @@ export default function App() {
   const resetFields = (e: React.MouseEvent): void => {
     setQuery({ pageNumber: 1, character: '', gender: '', species: '', status: '', type: '' })
   }
+
   const handleCharacterSearch = (e: React.ChangeEvent): void => setQuery({...query, character: (e.target as HTMLInputElement).value})
   const handleGender = (e: SelectChangeEvent): void => setQuery({...query, gender: (e.target as HTMLInputElement).value})
   const handleStatus = (e: SelectChangeEvent): void => setQuery({...query, status: (e.target as HTMLInputElement).value})
   const handleSpecies = (e: React.ChangeEvent): void => setQuery({...query, species: (e.target as HTMLInputElement).value})
   const handleType = (e: React.ChangeEvent): void => setQuery({...query, type: (e.target as HTMLInputElement).value})
+
   const search = () => setSkipQuery(false)
+
   const handlePaginationClick = (e: React.MouseEvent): void => {
     e.preventDefault()
     e.stopPropagation()
@@ -63,6 +66,12 @@ export default function App() {
     setSkipQuery(false)
     const nav = target.dataset.testid
     if(target.dataset.disabled) return
+    setQuery({...query, pageNumber: number})
+    togglePaginationHelper()
+    return
+  }
+
+  const paginationNavgiateHelper = (nav: string): void => {
     if(nav === 'NavigateNextIcon') {
       if(query.pageNumber === 42) return
       togglePaginationHelper()
@@ -75,9 +84,6 @@ export default function App() {
       setQuery({...query, pageNumber: query.pageNumber - 1})
       return
     }
-    setQuery({...query, pageNumber: number})
-    togglePaginationHelper()
-    return
   }
   const togglePaginationHelper = (): void => {
     setDisablePagination(true)
@@ -142,7 +148,17 @@ export default function App() {
           <Button onClick={ resetFields } variant='outlined' color='error'>Reset fields</Button>
           {/* <Button onClick={ search } variant='contained' color='success'>Search</Button> */}
         </FormControl>
-        <Pagination onClick={ handlePaginationClick } count={ numberOfPages } color="primary" shape="rounded"  sx={{ mb: 2, mt: 2 }} disabled={ disablePagination } data-disabled={ disablePagination } /> 
+        <Pagination 
+        onClick={ handlePaginationClick } 
+        count={ numberOfPages } 
+        color="primary" 
+        shape="rounded"  
+        sx={{ mb: 2, mt: 2 }} 
+        disabled={ disablePagination } 
+        data-disabled={ disablePagination } 
+        hideNextButton={ true }
+        hidePrevButton= { true }
+        /> 
         </Box>
         <Grid container direction="row" justifyContent="flex-start" alignItems="flex-start" spacing={{ xs: 2, md: 4, h: 'auto' }}>
         {

@@ -25,10 +25,10 @@ const CustomBio = styled('div')`
   border-radius: 6px;
 `
 const ImageContainer = styled('div')`
-  min-width: 150px;
-  min-height: 150px;
-  max-height: 300px;
-  max-width: 300px;
+  min-width: 100px;
+  min-height: 100px;
+  max-height: 350px;
+  max-width: 350px;
   & img {
     max-height: 100%;
     max-width: 100%;
@@ -37,8 +37,8 @@ const ImageContainer = styled('div')`
   }
 `
 const AliveStatus = styled('div')<{ status: string }>`
-  height: 8px;
-  width: 8px;
+  min-height: 8px;
+  min-width: 8px;
   margin-left: 6px;
   margin-right: 6px;
   margin-bottom: 4px;
@@ -87,27 +87,33 @@ export default function CharacterPage() {
     setEpisodes(episodeData)
   }
   return (
-    <Box style={{ backgroundColor: '#24282F'}} sx={{ width: 1, padding: 5, minHeight: '100vh' }}>
-      <Container maxWidth='md' sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <Box style={{ backgroundColor: '#24282F'}} sx={{ width: 1, padding: 1, minHeight: '100vh' }}>
+      <Container maxWidth='md' sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
       { characterData !== null &&
         <CustomBio>
           <Box sx={{ display: 'flex', width: 1 }}>
             <ImageContainer>
               <img draggable='false' src={characterData.image} alt={characterData.name}/>
             </ImageContainer>
-            <Box sx={{ display: 'flex', flexDirection: 'column',  alignItems: 'flex-start', width: 1, ml: 3 }}>
-              <Typography gutterBottom variant='h5' sx={{ width: 1, pt: 2, fontWeight: 'bold'}}>
+            <Box sx={{ display: 'flex', flexDirection: 'column',  alignItems: 'flex-start', width: 1, ml: 1 }}>
+              <Typography gutterBottom variant='h5' sx={{ width: 1, pt: 0.5, fontWeight: 'bold', color: 'info.main'}}>
                 { characterData.name }
               </Typography>
               <Typography gutterBottom component="div" sx={{ height: 10, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                 Status: <AliveStatus status={ characterData.status } /> 
-                { characterData.status } - { characterData.species } { characterData.gender }
+                { characterData.status } 
+              </Typography>
+              <Typography gutterBottom component="div" sx={{ height: 10, mb: 1.5, display: 'flex', whiteSpace:'nowrap'}}>
+                Species: { characterData.species } 
               </Typography>
               <Typography gutterBottom variant="caption" sx={{ ml: 1 }}>
                 Type: { characterData.type === '' ? 'None' : characterData.type }
               </Typography>
+              <Typography gutterBottom component="div" sx={{ height: 10, mb: 1.5 }}>
+                Gender: { characterData.gender }
+              </Typography>
               <Typography gutterBottom> Origin: { characterData.origin.name }</Typography>
-              <Box sx={{ mb: 2, mt: 1 }}>
+              <Box>
                 <Typography component='div' sx={{ color: 'rgb(158, 158, 158)' }}>Last known location: </Typography>
                 <Typography component='div'> { characterData.location.name } </Typography>
               </Box>
