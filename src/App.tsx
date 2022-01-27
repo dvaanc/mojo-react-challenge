@@ -112,7 +112,7 @@ export default function App() {
         onChange={ handleType } 
         value={ query.type } 
         id="searchType"  
-        label="Subspecies"  
+        label="Type"  
         variant="standard" 
         sx={{ maxWidth: 115 }}
         />

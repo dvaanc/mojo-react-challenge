@@ -35,7 +35,7 @@ If you have any questions please reach out to david@mojocrowe.com
 Create the following pages:
 
 - Characters
-  - List characters and display their name and image
+  - List characters and display their name and image 
   - Allowing searching for characters based on their name
   - Link each character to their details page
 - Character Details

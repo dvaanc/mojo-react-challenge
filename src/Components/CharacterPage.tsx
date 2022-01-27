@@ -104,9 +104,9 @@ export default function CharacterPage() {
                 { characterData.status } - { characterData.species } { characterData.gender }
               </Typography>
               <Typography gutterBottom variant="caption" sx={{ ml: 1 }}>
-                { characterData.type === '' ? 'Subspecies: None' : `Subspecies: ${characterData.type}` }
+                Type: { characterData.type === '' ? 'None' : characterData.type }
               </Typography>
-              <Typography gutterBottom>Origin: { characterData.origin.name }</Typography>
+              <Typography gutterBottom> Origin: { characterData.origin.name }</Typography>
               <Box sx={{ mb: 2, mt: 1 }}>
                 <Typography component='div' sx={{ color: 'rgb(158, 158, 158)' }}>Last known location: </Typography>
                 <Typography component='div'> { characterData.location.name } </Typography>
@@ -115,9 +115,11 @@ export default function CharacterPage() {
           </Box>
           <Box sx={{ mt: 2, maxHeight: 326, overflow: 'auto', width: 1 }}>
           <ListSubheader sx={{ backgroundColor: '#3C3E44' }}>
-            <Typography variant='h6' align='center'>
-              Episodes appeared in:
-            </Typography>
+            
+              { episodes && 
+              <Typography variant='h6' align='center'>
+                Episode appearances:
+              </Typography>}
             </ListSubheader>
           <List sx={{ display: 'flex', flexDirection: 'column', }}>
           { episodes !== null ?

@@ -37,3 +37,17 @@
 - spent awhile trying to fix the issue with fetching data from the array of endpoints
 - issue with typing in random words in Species and type causing application to break
 Live preview: https://dvaanc.github.io/mojo-react-challenge/
+
+- Characters
+  - List characters and display their name and image - DONE
+  - Allowing searching for characters based on their name - DONE
+  - Link each character to their details page - DONE
+- Character Details
+  - Display all of the characters information - DONE
+  - List the episodes that the character appears in -  DONE
+
+### Advanced
+
+- Add pagination to the Characters page - DONE
+- Allowing filtering of characters based on gender, species, status, and type - DONE
+- Write a unit test for one of your presentational components - WIP
