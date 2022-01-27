@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { Button, Container, Box, TextField, Typography, List, ListItem, ListItemText } from '@mui/material'
+import { 
+  Button, 
+  Container, 
+  Box, 
+  TextField, 
+  Typography, 
+  List, 
+  ListItem, 
+  ListItemText,
+  CircularProgress
+} from '@mui/material'
 import { styled } from '@mui/system'
 import { GetCharacter } from '../GraphQL/Queries'
 import { v4 as uuidv4 } from 'uuid'
@@ -133,7 +143,7 @@ export default function CharacterPage() {
           </Box>
       </CustomBio>
       :
-      <div>Loading...</div>
+      <CircularProgress />
 
       }
       <Link to='/'>

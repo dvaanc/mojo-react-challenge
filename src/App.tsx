@@ -11,10 +11,12 @@ import {
   SelectChangeEvent, 
   MenuItem, 
   FormControl, 
-  InputLabel 
+  InputLabel,
+  CircularProgress
 } from '@mui/material'
 import { GetCharacters } from './GraphQL/Queries'
 import CharacterCard from './Components/CharacterCard'
+import LoadingModal from './Components/LoadingModal'
 import { v4 as uuidv4 } from 'uuid'
 
 
@@ -22,6 +24,7 @@ import { v4 as uuidv4 } from 'uuid'
 export default function App() {
   const [characters, setCharacters] = useState(null as null | Array<any>)
   const [numberOfPages, setNumberOfPages] = useState(42 as number)
+  const [skipQuery, setSkipQuery] = useState(false as boolean)
   const [query, setQuery] = useState({
     pageNumber: 1 as number,
     character: '' as string,
@@ -32,42 +35,36 @@ export default function App() {
   })
 
   const [disablePagination, setDisablePagination] = useState(false as boolean)
-  const [isSearchbarEmpty, setIsSearchbarEmpty] = useState(true as boolean)
-  const data: any = GetCharacters(query.pageNumber, query.character, query.gender, query.species, query.status, query.type)
+  const data: any = GetCharacters(query.pageNumber, query.character, query.gender, query.species, query.status, query.type, skipQuery)
+  
   useEffect(() => {
     if(data) {
       setNumberOfPages(data.characters.info.pages)
       setCharacters(data.characters.results)
     }
   }, [data])
+
   const resetFields = (e: React.MouseEvent): void => {
-    setQuery({
-      pageNumber: 1,   
-      character: '',
-      gender: '',
-      species: '',
-      status: '',
-      type: '',
-  })
+    setQuery({ pageNumber: 1, character: '', gender: '', species: '', status: '', type: '' })
   }
   const handleCharacterSearch = (e: React.ChangeEvent): void => setQuery({...query, character: (e.target as HTMLInputElement).value})
   const handleGender = (e: SelectChangeEvent): void => setQuery({...query, gender: (e.target as HTMLInputElement).value})
   const handleStatus = (e: SelectChangeEvent): void => setQuery({...query, status: (e.target as HTMLInputElement).value})
   const handleSpecies = (e: React.ChangeEvent): void => setQuery({...query, species: (e.target as HTMLInputElement).value})
   const handleType = (e: React.ChangeEvent): void => setQuery({...query, type: (e.target as HTMLInputElement).value})
-
+  const search = () => setSkipQuery(false)
   const handlePaginationClick = (e: React.MouseEvent): void => {
     e.preventDefault()
     e.stopPropagation()
     const target = e.target as HTMLElement
     const number: number = Number(target.textContent)
+    setSkipQuery(false)
     const nav = target.dataset.testid
     if(target.dataset.disabled) return
     if(nav === 'NavigateNextIcon') {
       if(query.pageNumber === 42) return
       togglePaginationHelper()
-      const newNumber = query.pageNumber + 1
-      setQuery({...query, pageNumber: newNumber})
+      setQuery({...query, pageNumber: query.pageNumber + 1})
       return
     }
     if(nav === 'NavigateBeforeIcon') {
@@ -76,7 +73,6 @@ export default function App() {
       setQuery({...query, pageNumber: query.pageNumber - 1})
       return
     }
-    if(number === query.pageNumber) return;
     setQuery({...query, pageNumber: number})
     togglePaginationHelper()
     return
@@ -141,10 +137,9 @@ export default function App() {
           </FormControl>
         </Box>
         <FormControl sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-          <Button onClick={resetFields} variant='outlined' color='error'>Reset fields</Button>
-          <Button variant='contained' color='success'>Search</Button>
+          <Button onClick={ resetFields } variant='outlined' color='error'>Reset fields</Button>
+          <Button onClick={ search } variant='contained' color='success'>Search</Button>
         </FormControl>
-
         <Pagination onClick={ handlePaginationClick } count={ numberOfPages } color="primary" shape="rounded"  sx={{ mb: 2, mt: 2 }} disabled={ disablePagination } data-disabled={ disablePagination } /> 
         </Box>
         <Grid container direction="row" justifyContent="flex-start" alignItems="flex-start" spacing={{ xs: 2, md: 4 }}>
@@ -157,9 +152,12 @@ export default function App() {
               </Grid>
             )
           }) 
+            
           :
-          <div>Loading....</div>
+          <LoadingModal show={true}/>
+          
       }
+      <LoadingModal show={disablePagination} />
         </Grid>
       </Container>
     </Box>

@@ -76,29 +76,35 @@ export const GetCharacters = (
   speciesProp: string,
   statusProp: string,
   typeProp: string,
+  skipQuery: boolean
   ) => {
   const { error, data } = 
   useQuery(
     GET_CHARACTERS, 
     { variables: { 
-      pageNumber: pageNumberProp, 
-      characterName: characterQueryProp,
-      gender: genderProp,
-      species: speciesProp,
-      status: statusProp,
-      type: typeProp
-    } }
+        pageNumber: pageNumberProp, 
+        characterName: characterQueryProp,
+        gender: genderProp,
+        species: speciesProp,
+        status: statusProp,
+        type: typeProp
+      },
+      skip: skipQuery
+    }
     )
     if(error) throw error
   return data
 }
 
+//UNUSED
 export const GetCharacter = (characterID: number) => {
   const { error, data } = 
   useQuery(
     GET_CHARACTER, 
     { variables: { characterID: characterID } }
     )
-    if(error) throw error
+    if(error) {
+      console.log(error)
+    }
   return data
 }
