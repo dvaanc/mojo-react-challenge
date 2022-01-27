@@ -1,4 +1,3 @@
-import React from 'react';
 import { gql, useQuery } from '@apollo/client';
 
 // used to fetch all characters, fetch a page of characters, or filter characters by name with query variables.
@@ -92,19 +91,19 @@ export const GetCharacters = (
       // skip: skipQuery
     }
     )
-    if(error) throw error
+    if(error) {
+      console.error(error)
+      return false
+    }
   return data
 }
 
 //UNUSED
 export const GetCharacter = (characterID: number) => {
-  const { error, data } = 
-  useQuery(
-    GET_CHARACTER, 
-    { variables: { characterID: characterID } }
-    )
+  const { error, data, } = useQuery( GET_CHARACTER, { variables: { characterID: characterID } })
     if(error) {
       console.log(error)
+      console.log('test')
     }
   return data
 }

@@ -12,7 +12,8 @@ import {
   MenuItem, 
   FormControl, 
   InputLabel,
-  CircularProgress
+  Alert,
+  AlertTitle,
 } from '@mui/material'
 import { GetCharacters } from './GraphQL/Queries'
 import CharacterCard from './Components/CharacterCard'
@@ -34,13 +35,14 @@ export default function App() {
     type: '' as string
   })
 
-  const [disablePagination, setDisablePagination] = useState(false as boolean)
+  const [disablePagination, setDisablePagination] = useState(true as boolean)
   const data: any = GetCharacters(query.pageNumber, query.character, query.gender, query.species, query.status, query.type, skipQuery)
   
   useEffect(() => {
     if(data) {
       setNumberOfPages(data.characters.info.pages)
       setCharacters(data.characters.results)
+      setDisablePagination(false)
     }
   }, [data])
 
@@ -142,9 +144,9 @@ export default function App() {
         </FormControl>
         <Pagination onClick={ handlePaginationClick } count={ numberOfPages } color="primary" shape="rounded"  sx={{ mb: 2, mt: 2 }} disabled={ disablePagination } data-disabled={ disablePagination } /> 
         </Box>
-        <Grid container direction="row" justifyContent="flex-start" alignItems="flex-start" spacing={{ xs: 2, md: 4 }}>
+        <Grid container direction="row" justifyContent="flex-start" alignItems="flex-start" spacing={{ xs: 2, md: 4, h: 'auto' }}>
         {
-        characters !== null ? 
+        characters !== null && data !== false &&
           characters.map((character: any) => {
             return(
               <Grid item xs={6} sm={4} md={3} lg={2} key={uuidv4()}>
@@ -152,11 +154,16 @@ export default function App() {
               </Grid>
             )
           }) 
-            
-          :
-          <LoadingModal show={true}/>
-          
       }
+      { characters !== null && !data &&
+          <Box sx={{ position: 'relative', w: 1, margin: '0 auto', mt: 10 }}>
+            <Alert severity='error'>
+              <AlertTitle>Error</AlertTitle>
+              Something went wrong!
+              <Button sx={{ ml: 2 }}onClick={ resetFields } variant='outlined' color='error'>Reset</Button>
+            </Alert>
+          </Box>
+        }
       <LoadingModal show={disablePagination} />
         </Grid>
       </Container>

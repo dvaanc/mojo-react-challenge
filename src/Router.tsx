@@ -24,10 +24,9 @@ import ContentNextWeek from 'material-ui/svg-icons/content/next-week';
       mode: 'dark' as PaletteMode,
     },
   });
-//reference from https://www.apollographql.com/docs/react/api/link/apollo-link-error/
+// reference from https://www.apollographql.com/docs/react/api/link/apollo-link-error/
   const errorLink = onError(({ graphQLErrors, networkError}) => {
     if (graphQLErrors) {
-      console.log(graphQLErrors)
       graphQLErrors.forEach(({ message, locations, path }) =>
         console.log(
           `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`

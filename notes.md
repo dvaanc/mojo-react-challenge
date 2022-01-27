@@ -34,4 +34,6 @@
 - add additional filter options
 - need to add search button so it doesnt fire off too many useQueries (typing to fast triggers an error)
 
+- spent awhile trying to fix the issue with fetching data from the array of endpoints
+- issue with typing in random words in Species and type causing application to break
 Live preview: https://dvaanc.github.io/mojo-react-challenge/
