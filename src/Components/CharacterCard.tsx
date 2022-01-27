@@ -63,7 +63,7 @@ interface CharacterCardProps {
 export default function CharacterCard({ 
   characterNameProp, characterImageProp, characterID }: CharacterCardProps) {
   return (
-    <CustomCard sx={{ bgcolor: 'background.paper' }}>
+    <CustomCard data-testid="Character-Card" sx={{ bgcolor: 'background.paper' }}>
       <CardActionArea>
         <CardContent 
         sx={{ 
